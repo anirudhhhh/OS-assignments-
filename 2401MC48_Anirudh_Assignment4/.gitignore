@@ -1,0 +1,23 @@
+# macOS System Files
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+
+# Windows System Files
+Thumbs.db
+ehthumbs.db
+
+# Project Guidelines & Identity Files
+resources.md
+.identity*
+*.env
+
+# Editor & IDE Configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
