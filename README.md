@@ -1,6 +1,6 @@
-# OS Lab Assignment 5: Process Synchronization
+# OS Lab Assignment 6: Deadlock Avoidance and Detection
 
-This assignment implements process synchronization problems in xv6: Peterson's Algorithm, Producer-Consumer (Bounded Buffer), and Readers-Writers. (Question 4 is omitted).
+This assignment implements Banker's Algorithm simulation, Resource Allocation Graph cycle detection, Deadlock Prevention via Resource Ordering, and Combined Multi-Resource Synchronization with Deadlock Avoidance in xv6.
 
 ## How to Build and Run
 
@@ -11,18 +11,22 @@ This assignment implements process synchronization problems in xv6: Peterson's A
    ```
 
 2. Run the test programs inside the xv6 shell:
-   - **Question 1**:
+   - **Question 1 (Banker's Algorithm)**:
      ```
-     $ peterson
+     $ bankers
      ```
-   - **Question 2**:
+   - **Question 2 (Deadlock Detection)**:
      ```
-     $ prodcons
+     $ deadlockdetect
      ```
-     *(Optionally pass a buffer size: `$ prodcons 3`)*
-   - **Question 3**:
+   - **Question 3 (Resource Ordering)**:
      ```
-     $ readwrite
+     $ resourceorder bad
+     $ resourceorder fixed
+     ```
+   - **Question 4 (Combined Synchronization & Deadlock Avoidance)**:
+     ```
+     $ syncdeadlock
      ```
 
 3. To exit QEMU:
