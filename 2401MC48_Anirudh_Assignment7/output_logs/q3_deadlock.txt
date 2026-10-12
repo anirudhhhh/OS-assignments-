@@ -1,0 +1,56 @@
+$ deadlock
+Question 3: Deadlock Detection & Avoidance Simulation
+
+--- Test Case 1: Safe Matrix (5 Processes, 3 Resources) ---
+Available:
+  R0=0 R1=0 R2=0
+Process | Allocation | Request
+  P0    | 0 1 0      | 0 0 0 
+  P1    | 2 0 0      | 2 0 2 
+  P2    | 3 0 3      | 0 0 0 
+  P3    | 2 1 1      | 1 0 0 
+  P4    | 0 0 2      | 0 0 2 
+Result: No deadlock detected. System is safe.
+
+--- Test Case 2: Deadlocked Matrix (P2 requests R2=1) ---
+Available:
+  R0=0 R1=0 R2=0
+Process | Allocation | Request
+  P0    | 0 1 0      | 0 0 0 
+  P1    | 2 0 0      | 2 0 2 
+  P2    | 3 0 3      | 0 0 1 
+  P3    | 2 1 1      | 1 0 0 
+  P4    | 0 0 2      | 0 0 2 
+Result: Deadlock detected! Deadlocked processes: P1 P2 P3 P4 
+
+--- Test Case 3: Banker's Algorithm Avoidance ---
+Available:
+  R0=3 R1=3 R2=2
+Process | Allocation | Max    
+  P0    | 0 1 0      | 7 5 3 
+  P1    | 2 0 0      | 3 2 2 
+  P2    | 3 0 2      | 9 0 2 
+  P3    | 2 1 1      | 2 2 2 
+  P4    | 0 0 2      | 4 3 3 
+Initial state check: SAFE
+Safe sequence: P1 P3 P4 P0 P2 
+
+Evaluating Request from P1: [1, 0, 2]
+Request GRANTED: System remains in SAFE state.
+New safe sequence: P1 P3 P4 P0 P2 
+
+Evaluating Request from P4: [3, 3, 0]
+Request DENIED: Exceeds available resources (R0 available=2 < requested=3).
+
+--- Test Case 4: Real xv6 Process Circular Wait Simulation ---
+Resource mapping: Res0 = Pipe1, Res1 = Pipe2
+Process A holds Pipe1 write-end, waiting for Pipe2 read-end
+Process B holds Pipe2 write-end, waiting for Pipe1 read-end
+Available:
+  R0=0 R1=0
+Process | Allocation | Request
+  P0    | 1 0      | 0 1 
+  P1    | 0 1      | 1 0 
+Result: Circular wait identified! Deadlocked processes: P0 P1 
+Cleaned up pipes. Deadlock test completed.
+$ 

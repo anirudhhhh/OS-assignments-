@@ -1,6 +1,6 @@
-# OS Lab Assignment 6: Deadlock Avoidance and Detection
+# OS Lab Assignment 7: Threads, Semaphores, Deadlock Detection, and Priority Scheduling
 
-This assignment implements Banker's Algorithm simulation, Resource Allocation Graph cycle detection, Deadlock Prevention via Resource Ordering, and Combined Multi-Resource Synchronization with Deadlock Avoidance in xv6.
+This assignment implements kernel-supported threads (`clone` and `join`), counting semaphores with Producer-Consumer synchronization, user-space Deadlock Detection and Banker's Algorithm avoidance, and Priority-Based Preemptive CPU Scheduling with aging in xv6.
 
 ## How to Build and Run
 
@@ -11,22 +11,21 @@ This assignment implements Banker's Algorithm simulation, Resource Allocation Gr
    ```
 
 2. Run the test programs inside the xv6 shell:
-   - **Question 1 (Banker's Algorithm)**:
+   - **Question 1 (User-Level Threads & Race Condition)**:
      ```
-     $ bankers
+     $ threadtest
      ```
-   - **Question 2 (Deadlock Detection)**:
+   - **Question 2 (Semaphore Synchronization & Producer-Consumer)**:
      ```
-     $ deadlockdetect
+     $ synctest
      ```
-   - **Question 3 (Resource Ordering)**:
+   - **Question 3 (Deadlock Detection & Avoidance)**:
      ```
-     $ resourceorder bad
-     $ resourceorder fixed
+     $ deadlock
      ```
-   - **Question 4 (Combined Synchronization & Deadlock Avoidance)**:
+   - **Question 4 (Priority Preemptive CPU Scheduling with Aging)**:
      ```
-     $ syncdeadlock
+     $ priotest
      ```
 
 3. To exit QEMU:
