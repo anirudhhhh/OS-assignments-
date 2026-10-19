@@ -1,0 +1,31 @@
+$ lazytest
+lazytest
+Question 4: Lazy Memory Allocation (Demand Paging) Test
+
+1. Baseline: Free pages = 32534, User pages = 5
+
+Calling sbrk(32 MB = 33554432 bytes)...
+2. After 32 MB sbrk (untouched):
+   Free pages: 32534 (Delta: 0, expected 0 consumed)
+   User pages: 8197 (Delta: +8192 pages)
+
+Touching 4 widely spaced pages (Page 0, Page 1000, Page 4000, Page 8000)...
+3. After touching 4 pages:
+   Free pages: 32527 (Delta from sbrk: -7, expected -4)
+
+4. Testing system call (read from pipe) into untouched lazy buffer...
+   Pipe read 17 bytes: "xv6_demand_paging"
+   Syscall into untouched buffer succeeded without error.
+
+5. Testing fork() with lazy address space...
+   Child verified touched pages and touched page 2000 successfully.
+   Parent reaped child successfully.
+
+6. Testing invalid memory access (page fault out of bounds)...
+   Child attempting access beyond sz...
+usertrap(): unexpected scause 0xd pid=5
+            sepc=0x24c stval=0x2105000
+   Offending child was terminated by kernel without crashing system.
+
+lazytest completed successfully.
+$ 

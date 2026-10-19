@@ -1,6 +1,6 @@
-# OS Lab Assignment 7: Threads, Semaphores, Deadlock Detection, and Priority Scheduling
+# OS Lab Assignment 8: Memory Management in xv6
 
-This assignment implements kernel-supported threads (`clone` and `join`), counting semaphores with Producer-Consumer synchronization, user-space Deadlock Detection and Banker's Algorithm avoidance, and Priority-Based Preemptive CPU Scheduling with aging in xv6.
+This assignment implements virtual-to-physical address translation (`va2pa`), kernel and user physical memory statistics tracking (`getmeminfo`), hierarchical page table inspection (`vmprint`), and lazy page allocation / demand paging with copyin/copyout support in xv6.
 
 ## How to Build and Run
 
@@ -11,21 +11,21 @@ This assignment implements kernel-supported threads (`clone` and `join`), counti
    ```
 
 2. Run the test programs inside the xv6 shell:
-   - **Question 1 (User-Level Threads & Race Condition)**:
+   - **Question 1 (Virtual to Physical Address Translation)**:
      ```
-     $ threadtest
+     $ vatest
      ```
-   - **Question 2 (Semaphore Synchronization & Producer-Consumer)**:
+   - **Question 2 (Physical Memory Statistics & Verification)**:
      ```
-     $ synctest
+     $ memtest
      ```
-   - **Question 3 (Deadlock Detection & Avoidance)**:
+   - **Question 3 (Hierarchical Page Table Dump & Guard Page Verification)**:
      ```
-     $ deadlock
+     $ vmprinttest
      ```
-   - **Question 4 (Priority Preemptive CPU Scheduling with Aging)**:
+   - **Question 4 (Lazy Allocation & Demand Paging)**:
      ```
-     $ priotest
+     $ lazytest
      ```
 
 3. To exit QEMU:

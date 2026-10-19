@@ -1,0 +1,40 @@
+$ memtest
+memtest
+Question 2: Physical Memory Statistics Test
+
+[1. Initial Baseline]
+  Total pages:      32735
+  Free pages:       32535
+  User pages (sz):  4
+  Pagetable pages:  5
+
+Growing memory by 10 pages (40960 bytes)...
+[2. After Allocating 10 Pages]
+  Total pages:      32735
+  Free pages:       32525
+  User pages (sz):  14
+  Pagetable pages:  5
+Delta free pages: -10 (expected -10)
+
+Forking child process...
+[3. Child Process View]
+  Total pages:      32735
+  Free pages:       32505
+  User pages (sz):  14
+  Pagetable pages:  5
+Child observed free pages reduction: 20 pages allocated for child clone
+
+Child exited and reaped by parent.
+[4. After Child Exit & Reaping]
+  Total pages:      32735
+  Free pages:       32525
+  User pages (sz):  14
+  Pagetable pages:  5
+
+--- Memory Leak Verification ---
+Free pages before fork: 32525
+Free pages after wait:  32525
+SUCCESS: No memory leak detected! Free pages restored exactly.
+
+memtest completed successfully.
+$ 
