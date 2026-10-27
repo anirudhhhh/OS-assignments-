@@ -155,7 +155,6 @@ sbrk(int n)
   return sys_sbrk(n);
 }
 
-// Assignment 9: retain the upstream lazy-allocation API for existing tests.
 char *
 sbrklazy(int n)
 {

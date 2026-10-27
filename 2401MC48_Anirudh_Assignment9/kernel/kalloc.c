@@ -104,3 +104,4 @@ ktotal_pages_count(void)
 {
   return kmem.total_pages;
 }
+

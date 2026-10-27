@@ -179,3 +179,4 @@ sys_getfaults(void)
 {
   return myproc()->faults;
 }
+

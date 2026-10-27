@@ -1,26 +1,21 @@
 $ faulttest
+faulttest
 Question 2: Handling Page Faults (Lazy Allocation)
-
 Initial page faults handled: 2
 Calling sbrk(32 * 4096) to increase heap by 32 pages...
 Page faults after lazy sbrk: 0 (0 frames allocated eagerly)
-
 Writing to exactly 5 different pages (indices 0, 5, 12, 20, 31)...
-  Touched page 0 (VA = 0x0000000000004000), value = 'A'
-  Touched page 5 (VA = 0x0000000000009000), value = 'B'
-  Touched page 12 (VA = 0x0000000000010000), value = 'C'
-  Touched page 20 (VA = 0x0000000000018000), value = 'D'
-  Touched page 31 (VA = 0x0000000000023000), value = 'E'
-
+Touched page 0 (VA = 0x0000000000004000), value = 'A'
+Touched page 5 (VA = 0x0000000000009000), value = 'B'
+Touched page 12 (VA = 0x0000000000010000), value = 'C'
+Touched page 20 (VA = 0x0000000000018000), value = 'D'
+Touched page 31 (VA = 0x0000000000023000), value = 'E'
 Page faults handled: 5 (expected 5)
 SUCCESS: exactly 5 page faults were handled by demand paging.
-
 --- Testing Invalid Access Beyond Allocated Heap ---
-Child (pid=5) attempting access beyond sz (page 33)...
-usertrap(): unexpected scause 0xf pid=5
-            sepc=0x14a stval=0x25000
+Child (pid=4) attempting access beyond sz (page 33)...
+usertrap(): unexpected scause 0xf pid=4
+sepc=0x148 stval=0x25000
 Parent reaped child (exit status: -1). Kernel killed only offending child.
 Parent continues executing normally.
-
 faulttest completed successfully.
-$ 

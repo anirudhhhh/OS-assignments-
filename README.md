@@ -1,23 +1,28 @@
-# OS Lab Assignment 9: Paging in xv6
+# OS Lab Assignment 9: Page Table Dump, Demand Paging, and Page Replacement Algorithms
 
-Print user page tables, handle lazy allocation faults, and compare FIFO and LRU page replacement.
+This assignment implements process page table dumping (`vmprint`), lazy page allocation with handled page faults accounting (`faulttest`), and FIFO/LRU page replacement algorithms comparison (`pagerepl`) in xv6.
 
-## Build and run
+## How to Build and Run
 
-Overlay this folder's kernel/, user/ and Makefile onto the existing xv6 RISC-V source tree. Then run:
+1. Build and start xv6 in QEMU:
+   ```bash
+   make clean
+   make qemu
+   ```
 
-```sh
-make clean
-make qemu
-```
+2. Run the test programs inside the xv6 shell:
+   - **Question 1 (Printing the Page Table of a Process)**:
+     ```
+     $ pttest
+     ```
+   - **Question 2 (Handling Page Faults & Lazy Allocation)**:
+     ```
+     $ faulttest
+     ```
+   - **Question 3 (Page Replacement Algorithms: FIFO and LRU)**:
+     ```
+     $ pagerepl
+     ```
 
-Inside xv6:
-
-```
-pttest
-faulttest
-pagerepl
-pagerepl 3 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
-```
-
-Exit QEMU with Ctrl-A, then X.
+3. To exit QEMU:
+   Press `Ctrl-A` then `X`.

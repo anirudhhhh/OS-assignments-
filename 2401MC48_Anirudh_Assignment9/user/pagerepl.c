@@ -177,28 +177,9 @@ main(int argc, char *argv[])
 
   printf("Question 3: Page Replacement Algorithms (FIFO and LRU)\n\n");
 
-  if (argc == 2) {
-    fprintf(2, "usage: pagerepl [frames page ...]\n");
-    exit(1);
-  }
   if (argc >= 3) {
     // Custom input from command line
     int custom_frames = atoi(argv[1]);
-    if (custom_frames < 1 || custom_frames > 10) {
-      fprintf(2, "pagerepl: frames must be between 1 and 10\n");
-      exit(1);
-    }
-    for (int i = 1; i < argc; i++) {
-      if (!argv[i][0]) exit(1);
-      int value = 0;
-      for (char *c = argv[i]; *c; c++) {
-        if (*c < '0' || *c > '9' || value > (2147483647 - (*c - '0')) / 10) {
-          fprintf(2, "pagerepl: use nonnegative integer input\n");
-          exit(1);
-        }
-        value = value * 10 + *c - '0';
-      }
-    }
     int custom_refs[50];
     int custom_n = argc - 2;
     if (custom_n > 50)
@@ -219,7 +200,7 @@ main(int argc, char *argv[])
   run_lru(refs, n, 3, 1);
 
   // 2. Comparative table for 3, 4, and 5 frames
-  printf("Comparative Performance Table (3, 4, and 5 Frames)\n");
+  printf("=== Comparative Performance Table (3, 4, and 5 Frames) ===\n");
   printf("Frames | Algorithm | Page Faults | Page Hits | Hit Ratio\n");
   printf("-------+-----------+-------------+-----------+----------\n");
 

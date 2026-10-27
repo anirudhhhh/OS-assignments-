@@ -488,35 +488,75 @@ ismapped(pagetable_t pagetable, uint64 va)
   return 0;
 }
 
-// Assignment 9: count table frames, including supervisor trap mapping tables.
+// Count physical page table frames allocated for this page table
 int
 count_pagetable_pages(pagetable_t pagetable)
 {
-  int count = 1;
+  int count = 1; // root page table
   for (int i = 0; i < 512; i++) {
     pte_t pte = pagetable[i];
-    if ((pte & PTE_V) && !(pte & (PTE_R | PTE_W | PTE_X)))
-      count += count_pagetable_pages((pagetable_t)PTE2PA(pte));
+    if (pte & PTE_V) {
+      count++; // level 1 page table
+      pagetable_t pt1 = (pagetable_t)PTE2PA(pte);
+      for (int j = 0; j < 512; j++) {
+        pte_t pte1 = pt1[j];
+        if (pte1 & PTE_V) {
+          count++; // level 0 page table
+        }
+      }
+    }
   }
   return count;
 }
 
-// Assignment 9: Sv39 user mappings exclude guard and supervisor-only pages.
+// Print hierarchical page table dump of process
 int
 vmprint_process(pagetable_t pagetable)
 {
   struct proc *p = myproc();
-  int pages = 0;
-  printk("pid=%d page table %p\n", p->pid, pagetable);
-  for (uint64 va = 0; va < p->sz; va += PGSIZE) {
-    pte_t *pte = walk(pagetable, va, 0);
-    if (pte && (*pte & PTE_V) && (*pte & PTE_U)) {
-      printk("va %p -> pa %p P=1 W=%d U=1\n", (void *)va, (void *)PTE2PA(*pte),
-             (*pte & PTE_W) != 0);
-      pages++;
+  printk("page directory %p (pid=%d, sz=%ld):\n", pagetable, p->pid, p->sz);
+  int user_pages = 0;
+
+  for (int i = 0; i < 512; i++) {
+    pte_t pde = pagetable[i];
+    if ((pde & PTE_V) == 0)
+      continue;
+
+    // Skip high kernel mapping range (TRAMPOLINE / TRAPFRAME at i == 255)
+    if (i == 255) {
+      continue;
+    }
+
+    pagetable_t pt1 = (pagetable_t)PTE2PA(pde);
+    for (int j = 0; j < 512; j++) {
+      pte_t pte1 = pt1[j];
+      if ((pte1 & PTE_V) == 0)
+        continue;
+
+      pagetable_t pt0 = (pagetable_t)PTE2PA(pte1);
+      for (int k = 0; k < 512; k++) {
+        pte_t pte0 = pt0[k];
+        if ((pte0 & PTE_V) == 0)
+          continue;
+
+        uint64 va = ((uint64)i << 30) | ((uint64)j << 21) | ((uint64)k << 12);
+        int is_u = (pte0 & PTE_U) ? 1 : 0;
+        int is_w = (pte0 & PTE_W) ? 1 : 0;
+
+        if (is_u) {
+          user_pages++;
+          printk("va 0x%lx -> pa %p flags: P=1 W=%d U=%d\n",
+                 va, (void *)PTE2PA(pte0), is_w, is_u);
+        } else {
+          printk("va 0x%lx -> pa %p flags: P=1 W=%d U=%d [GUARD PAGE]\n",
+                 va, (void *)PTE2PA(pte0), is_w, is_u);
+        }
+      }
     }
   }
-  printk("Total valid user pages: %d\n", pages);
+
+  printk("Total valid user pages: %d\n", user_pages);
   printk("Total page-table pages: %d\n", count_pagetable_pages(pagetable));
   return 0;
 }
+

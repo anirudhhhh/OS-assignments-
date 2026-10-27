@@ -38,42 +38,42 @@ extern struct cpu cpus[NCPU];
 // the trapframe's kernel_*, restore user registers from the
 // trapframe, switch to the user page table, and enter user space.
 struct trapframe {
-  uint64 kernel_satp; // offset 0   // kernel page table
-  uint64 kernel_sp; // offset 8     // top of process's kernel stack
-  uint64 kernel_trap; // offset 16   // usertrap()
-  uint64 epc; // offset 24           // saved user program counter
-  uint64 kernel_hartid; // offset 32 // saved kernel tp
-  uint64 ra; // offset 40
-  uint64 sp; // offset 48
-  uint64 gp; // offset 56
-  uint64 tp; // offset 64
-  uint64 t0; // offset 72
-  uint64 t1; // offset 80
-  uint64 t2; // offset 88
-  uint64 s0; // offset 96
-  uint64 s1; // offset 104
-  uint64 a0; // offset 112
-  uint64 a1; // offset 120
-  uint64 a2; // offset 128
-  uint64 a3; // offset 136
-  uint64 a4; // offset 144
-  uint64 a5; // offset 152
-  uint64 a6; // offset 160
-  uint64 a7; // offset 168
-  uint64 s2; // offset 176
-  uint64 s3; // offset 184
-  uint64 s4; // offset 192
-  uint64 s5; // offset 200
-  uint64 s6; // offset 208
-  uint64 s7; // offset 216
-  uint64 s8; // offset 224
-  uint64 s9; // offset 232
-  uint64 s10; // offset 240
-  uint64 s11; // offset 248
-  uint64 t3; // offset 256
-  uint64 t4; // offset 264
-  uint64 t5; // offset 272
-  uint64 t6; // offset 280
+  uint64 kernel_satp;   // 0: kernel page table
+  uint64 kernel_sp;     // 8: top of process's kernel stack
+  uint64 kernel_trap;   // 16: usertrap()
+  uint64 epc;           // 24: saved user program counter
+  uint64 kernel_hartid; // 32: saved kernel tp
+  uint64 ra;            // 40
+  uint64 sp;            // 48
+  uint64 gp;            // 56
+  uint64 tp;            // 64
+  uint64 t0;            // 72
+  uint64 t1;            // 80
+  uint64 t2;            // 88
+  uint64 s0;            // 96
+  uint64 s1;            // 104
+  uint64 a0;            // 112
+  uint64 a1;            // 120
+  uint64 a2;            // 128
+  uint64 a3;            // 136
+  uint64 a4;            // 144
+  uint64 a5;            // 152
+  uint64 a6;            // 160
+  uint64 a7;            // 168
+  uint64 s2;            // 176
+  uint64 s3;            // 184
+  uint64 s4;            // 192
+  uint64 s5;            // 200
+  uint64 s6;            // 208
+  uint64 s7;            // 216
+  uint64 s8;            // 224
+  uint64 s9;            // 232
+  uint64 s10;           // 240
+  uint64 s11;           // 248
+  uint64 t3;            // 256
+  uint64 t4;            // 264
+  uint64 t5;            // 272
+  uint64 t6;            // 280
 };
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
@@ -94,7 +94,6 @@ struct proc {
 
   // these are private to the process, so p->lock need not be held.
   uint64 kstack;               // Virtual address of kernel stack
-  int faults; // Assignment 9: successful user page faults; reset in allocproc.
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table
   struct trapframe *trapframe; // data page for trampoline.S
@@ -102,4 +101,5 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  int faults;                  // Handled page faults count
 };
