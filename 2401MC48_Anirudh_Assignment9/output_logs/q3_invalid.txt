@@ -1,0 +1,5 @@
+$ pagerepl 0 1 2
+Question 3: Page Replacement Algorithms (FIFO and LRU)
+
+pagerepl: frames must be between 1 and 10
+$ 

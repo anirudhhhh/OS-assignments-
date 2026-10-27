@@ -1,0 +1,27 @@
+$ pttest
+Question 1: Printing the Page Table of a Process
+
+--- Initial Page Table Dump at Start-up ---
+pid=3 page table 0x0000000087f33000
+va 0x0000000000000000 -> pa 0x0000000087f30000 P=1 W=0 U=1
+va 0x0000000000001000 -> pa 0x0000000087f2d000 P=1 W=1 U=1
+va 0x0000000000003000 -> pa 0x0000000087f2b000 P=1 W=1 U=1
+Total valid user pages: 3
+Total page-table pages: 5
+
+Calling sbrk(4 * 4096) and accessing newly allocated memory...
+
+--- Page Table Dump After Allocating 4 Pages ---
+pid=3 page table 0x0000000087f33000
+va 0x0000000000000000 -> pa 0x0000000087f30000 P=1 W=0 U=1
+va 0x0000000000001000 -> pa 0x0000000087f2d000 P=1 W=1 U=1
+va 0x0000000000003000 -> pa 0x0000000087f2b000 P=1 W=1 U=1
+va 0x0000000000004000 -> pa 0x0000000087f34000 P=1 W=1 U=1
+va 0x0000000000005000 -> pa 0x0000000087f54000 P=1 W=1 U=1
+va 0x0000000000006000 -> pa 0x0000000087f53000 P=1 W=1 U=1
+va 0x0000000000007000 -> pa 0x0000000087f49000 P=1 W=1 U=1
+Total valid user pages: 7
+Total page-table pages: 5
+
+pttest completed successfully: exactly 4 new pages appeared.
+$ 

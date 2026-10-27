@@ -21,3 +21,8 @@ resources.md
 *.swp
 *.swo
 *~
+
+# Local xv6 build tree
+/xv6-riscv/
+
+/Assignment9-Repository/

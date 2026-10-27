@@ -1,0 +1,3 @@
+$ lazycheck
+lazycheck: zero fill, syscall buffer, sparse fork, isolation and shrink PASS
+$ 
