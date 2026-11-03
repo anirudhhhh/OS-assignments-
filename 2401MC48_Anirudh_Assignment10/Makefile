@@ -146,9 +146,10 @@ UPROGS=\
 	$U/_forphan\
 	$U/_dorphan\
 	$U/_sync\
-	$U/_pttest\
-	$U/_faulttest\
-	$U/_pagerepl
+	$U/_memtest\
+	$U/_vttest\
+	$U/_pagetest\
+	$U/_pagereplace
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

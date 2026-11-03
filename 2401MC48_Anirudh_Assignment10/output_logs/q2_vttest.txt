@@ -1,0 +1,20 @@
+vttest
+=== Question 2: Virtual-to-Physical Address Translation ===
+
+1. Translating Code & Stack Virtual Addresses:
+[MAPPED] Code Segment (main): VA 0x0000000000000052 -> PA 0x0000000087F22052 (Offset: 0x52)
+[MAPPED] Stack Variable: VA 0x0000000000003FAC -> PA 0x0000000087F1DFAC (Offset: 0xFAC)
+
+2. Allocating 3 Pages via sbrk()...
+Allocated 3 pages starting at VA 0x0000000000004000
+[MAPPED] Allocated Page 0 Base: VA 0x0000000000004000 -> PA 0x0000000087F26000 (Offset: 0x0)
+[MAPPED] Allocated Page 0 + Offset 0x555: VA 0x0000000000004555 -> PA 0x0000000087F26555 (Offset: 0x555)
+[MAPPED] Allocated Page 1 Base: VA 0x0000000000005000 -> PA 0x0000000087F54000 (Offset: 0x0)
+[MAPPED] Allocated Page 2 + Offset 0x888: VA 0x0000000000006888 -> PA 0x0000000087F53888 (Offset: 0x888)
+
+3. Testing Unmapped and Invalid Virtual Addresses:
+[UNMAPPED/INVALID] Unmapped Beyond Heap: VA 0x0000000000068000 -> Not Mapped (Error -1)
+[UNMAPPED/INVALID] Stack Guard Page (0x2000): VA 0x0000000000002000 -> Not Mapped (Error -1)
+[UNMAPPED/INVALID] Invalid High Address (0x8000000000): VA 0x0000008000000000 -> Not Mapped (Error -1)
+
+vttest completed successfully.

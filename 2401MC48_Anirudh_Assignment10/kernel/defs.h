@@ -63,6 +63,7 @@ void            kfree(void *);
 void            kinit(void);
 int             kfree_pages_count(void);
 int             ktotal_pages_count(void);
+void            kmem_get_stats(int *, int *, int *, int *);
 
 // log.c
 void            initlog(int, struct superblock*);

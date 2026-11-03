@@ -23,6 +23,8 @@ struct {
   struct run *freelist;
   int free_pages;
   int total_pages;
+  int total_allocated;
+  int total_freed;
 } kmem;
 
 void
@@ -31,7 +33,14 @@ kinit()
   initlock(&kmem.lock, "kmem");
   kmem.total_pages = ((uint64)PHYSTOP - PGROUNDUP((uint64)end)) / PGSIZE;
   kmem.free_pages = 0;
+  kmem.total_allocated = 0;
+  kmem.total_freed = 0;
   freerange(end, (void *)PHYSTOP);
+  // Reset counters after initial free pool creation
+  acquire(&kmem.lock);
+  kmem.total_allocated = 0;
+  kmem.total_freed = 0;
+  release(&kmem.lock);
 }
 
 void
@@ -64,6 +73,7 @@ kfree(void *pa)
   r->next = kmem.freelist;
   kmem.freelist = r;
   kmem.free_pages++;
+  kmem.total_freed++;
   release(&kmem.lock);
 }
 
@@ -80,12 +90,29 @@ kalloc(void)
   if (r) {
     kmem.freelist = r->next;
     kmem.free_pages--;
+    kmem.total_allocated++;
   }
   release(&kmem.lock);
 
   if (r)
     memset((char *)r, 5, PGSIZE); // fill with junk
   return (void *)r;
+}
+
+// Return physical memory statistics
+void
+kmem_get_stats(int *allocated, int *freed, int *current, int *available)
+{
+  acquire(&kmem.lock);
+  if (allocated)
+    *allocated = kmem.total_allocated;
+  if (freed)
+    *freed = kmem.total_freed;
+  if (current)
+    *current = kmem.total_allocated - kmem.total_freed;
+  if (available)
+    *available = kmem.free_pages;
+  release(&kmem.lock);
 }
 
 // Return the current number of free physical pages

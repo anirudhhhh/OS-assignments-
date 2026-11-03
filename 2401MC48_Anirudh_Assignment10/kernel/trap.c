@@ -68,13 +68,14 @@ usertrap(void)
     syscall();
   } else if ((which_dev = devintr()) != 0) {
     // ok
-  } else if ((r_scause() == 15 || r_scause() == 13) &&
-             vmfault(p->pagetable, p->sz, r_stval(),
-                     (r_scause() == 13) ? 1 : 0) != 0) {
-    p->faults++; // increment page fault counter
-  } else {
-    printk("usertrap(): unexpected scause 0x%lx pid=%d\n", r_scause(), p->pid);
-    printk("            sepc=0x%lx stval=0x%lx\n", r_sepc(), r_stval());
+  } else if (r_scause() == 15 || r_scause() == 13) {
+    pte_t *pte = walk(p->pagetable, r_stval(), 0);
+    if (pte && (*pte & PTE_V) && !(*pte & PTE_W) && r_scause() == 15) {
+      printk("usertrap(): write-protection page fault at stval=0x%lx (read-only page)\n", r_stval());
+    } else {
+      printk("usertrap(): unexpected scause 0x%lx pid=%d\n", r_scause(), p->pid);
+      printk("            sepc=0x%lx stval=0x%lx\n", r_sepc(), r_stval());
+    }
     setkilled(p);
   }
 

@@ -1,0 +1,24 @@
+pagetest
+=== Question 3: Page Table Management & Page Protection ===
+
+1. Allocating 1 page (4096 bytes) using sbrk()...
+Allocated page at VA 0x0000000000004000 with content: "HI"
+
+2. Inspecting page-table entry before setreadonly():
+pageinfo: VA 0x4000 -> PFN 0x87f26 (PA 0x87f26000) | Flags: P=1, W=1, U=1
+
+3. Setting page to READ-ONLY via setreadonly()...
+setreadonly() returned success.
+
+4. Inspecting page-table entry after setreadonly():
+pageinfo: VA 0x4000 -> PFN 0x87f26 (PA 0x87f26000) | Flags: P=1, W=0, U=1
+
+5. Forking child process to verify read and trigger write protection fault...
+[Child pid 4] Reading from read-only page: 'H' (READ SUCCESSFUL)
+[Child pid 4] Attempting to write 'W' to read-only page at VA 0x0000000000004000...
+usertrap(): write-protection page fault at stval=0x4000 (read-only page)
+
+[Parent] Child process terminated with status -1
+[Parent] Write-protection page fault verified successfully!
+
+pagetest completed successfully.

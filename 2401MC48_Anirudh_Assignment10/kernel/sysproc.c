@@ -45,20 +45,8 @@ sys_sbrk(void)
 
   argint(0, &n);
   addr = myproc()->sz;
-
-  if (n < 0) {
-    if (growproc(n) < 0) {
-      return -1;
-    }
-  } else if (n > 0) {
-    // Lazily allocate memory for this process: increase sz
-    // without eagerly allocating physical frames.
-    if (addr + n < addr)
-      return -1;
-    if (addr + n > TRAPFRAME)
-      return -1;
-    myproc()->sz += n;
-  }
+  if (growproc(n) < 0)
+    return -1;
   return addr;
 }
 
@@ -165,18 +153,89 @@ sys_getmeminfo(void)
   return 0;
 }
 
-// Dump process page table
+// Physical memory allocation statistics
 uint64
-sys_vmprint(void)
+sys_memstats(void)
 {
-  vmprint_process(myproc()->pagetable);
+  int alloc, freed, curr, avail;
+  kmem_get_stats(&alloc, &freed, &curr, &avail);
+  printk("--- Physical Memory Statistics ---\n");
+  printk("Total Allocated Pages : %d\n", alloc);
+  printk("Total Freed Pages     : %d\n", freed);
+  printk("Currently Allocated   : %d\n", curr);
+  printk("Available Free Pages  : %d\n", avail);
+  printk("----------------------------------\n");
   return 0;
 }
 
-// Return number of page faults handled for calling process
+// Virtual-to-physical address translation
 uint64
-sys_getfaults(void)
+sys_vtop(void)
 {
-  return myproc()->faults;
+  uint64 va;
+  argaddr(0, &va);
+
+  if (va >= MAXVA)
+    return (uint64)-1;
+
+  pte_t *pte = walk(myproc()->pagetable, va, 0);
+  if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0) {
+    return (uint64)-1;
+  }
+
+  uint64 pa = PTE2PA(*pte) | (va & (PGSIZE - 1));
+  return pa;
+}
+
+// Inspect page-table entry and flags
+uint64
+sys_pageinfo(void)
+{
+  uint64 va;
+  argaddr(0, &va);
+
+  if (va >= MAXVA) {
+    printk("pageinfo: VA 0x%lx is out of range\n", va);
+    return -1;
+  }
+
+  pte_t *pte = walk(myproc()->pagetable, va, 0);
+  if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0) {
+    printk("pageinfo: VA 0x%lx is UNMAPPED / INVALID\n", va);
+    return -1;
+  }
+
+  uint64 pa = PTE2PA(*pte);
+  uint64 pfn = pa >> 12; // Physical frame number
+  int p = (*pte & PTE_V) ? 1 : 0;
+  int w = (*pte & PTE_W) ? 1 : 0;
+  int u = (*pte & PTE_U) ? 1 : 0;
+
+  printk("pageinfo: VA 0x%lx -> PFN 0x%lx (PA 0x%lx) | Flags: P=%d, W=%d, U=%d\n",
+         va, pfn, pa, p, w, u);
+  return 0;
+}
+
+// Make user virtual page read-only by removing PTE_W
+uint64
+sys_setreadonly(void)
+{
+  uint64 va;
+  argaddr(0, &va);
+
+  if (va >= MAXVA)
+    return -1;
+
+  pte_t *pte = walk(myproc()->pagetable, va, 0);
+  if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0) {
+    return -1;
+  }
+
+  // Clear PTE_W permission bit
+  *pte = (*pte) & ~PTE_W;
+
+  // Flush local TLB cache
+  sfence_vma();
+  return 0;
 }
 

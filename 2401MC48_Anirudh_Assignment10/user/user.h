@@ -27,8 +27,10 @@ int uptime(void);
 int sync(void);
 uint64 va2pa(uint64);
 int getmeminfo(struct meminfo *);
-int vmprint(void);
-int getfaults(void);
+int memstats(void);
+uint64 vtop(uint64);
+int pageinfo(uint64);
+int setreadonly(uint64);
 
 // ulib.c
 int stat(const char *, struct stat *);

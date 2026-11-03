@@ -23,6 +23,8 @@
 #define SYS_sync   22
 #define SYS_va2pa       23
 #define SYS_getmeminfo  24
-#define SYS_vmprint     25
-#define SYS_getfaults   26
+#define SYS_memstats    27
+#define SYS_vtop        28
+#define SYS_pageinfo    29
+#define SYS_setreadonly 30
 

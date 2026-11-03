@@ -1,0 +1,34 @@
+memtest
+=== Question 1: Tracking Physical Memory Allocation ===
+
+1. Baseline Memory Statistics (Before Allocation):
+--- Physical Memory Statistics ---
+Total Allocated Pages : 240
+Total Freed Pages     : 40
+Currently Allocated   : 200
+Available Free Pages  : 32534
+----------------------------------
+
+2. Allocating 10 pages (40960 bytes) using sbrk()...
+Successfully allocated and touched 10 pages at virtual address 0x0000000000004000
+
+3. Memory Statistics After Allocation:
+--- Physical Memory Statistics ---
+Total Allocated Pages : 250
+Total Freed Pages     : 40
+Currently Allocated   : 210
+Available Free Pages  : 32524
+----------------------------------
+
+4. Releasing 10 pages using sbrk(-40960)...
+Successfully released 10 pages
+
+5. Memory Statistics After Deallocation:
+--- Physical Memory Statistics ---
+Total Allocated Pages : 250
+Total Freed Pages     : 50
+Currently Allocated   : 200
+Available Free Pages  : 32534
+----------------------------------
+
+memtest completed successfully.

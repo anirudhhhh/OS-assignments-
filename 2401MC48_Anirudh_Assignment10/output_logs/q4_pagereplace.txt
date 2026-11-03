@@ -1,0 +1,108 @@
+pagereplace
+=== Question 4: Page Replacement Algorithms (FIFO, LRU, Optimal) ===
+
+Reference String (20 references):
+7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1 
+
+============================================================
+Part 1: Detailed Step-by-Step Execution on 3 Frames
+============================================================
+
+--- FIFO Simulation (3 Frames) ---
+Ref  1 (Page 7): [ 7  -  - ] -> FAULT
+Ref  2 (Page 0): [ 7  0  - ] -> FAULT
+Ref  3 (Page 1): [ 7  0  1 ] -> FAULT
+Ref  4 (Page 2): [ 2  0  1 ] -> FAULT
+Ref  5 (Page 0): [ 2  0  1 ] -> HIT
+Ref  6 (Page 3): [ 2  3  1 ] -> FAULT
+Ref  7 (Page 0): [ 2  3  0 ] -> FAULT
+Ref  8 (Page 4): [ 4  3  0 ] -> FAULT
+Ref  9 (Page 2): [ 4  2  0 ] -> FAULT
+Ref 10 (Page 3): [ 4  2  3 ] -> FAULT
+Ref 11 (Page 0): [ 0  2  3 ] -> FAULT
+Ref 12 (Page 3): [ 0  2  3 ] -> HIT
+Ref 13 (Page 2): [ 0  2  3 ] -> HIT
+Ref 14 (Page 1): [ 0  1  3 ] -> FAULT
+Ref 15 (Page 2): [ 0  1  2 ] -> FAULT
+Ref 16 (Page 0): [ 0  1  2 ] -> HIT
+Ref 17 (Page 1): [ 0  1  2 ] -> HIT
+Ref 18 (Page 7): [ 7  1  2 ] -> FAULT
+Ref 19 (Page 0): [ 7  0  2 ] -> FAULT
+Ref 20 (Page 1): [ 7  0  1 ] -> FAULT
+FIFO Result: 15 Faults, 5 Hits (Hit Ratio: 25%)
+
+--- LRU Simulation (3 Frames) ---
+Ref  1 (Page 7): [ 7  -  - ] -> FAULT
+Ref  2 (Page 0): [ 7  0  - ] -> FAULT
+Ref  3 (Page 1): [ 7  0  1 ] -> FAULT
+Ref  4 (Page 2): [ 2  0  1 ] -> FAULT
+Ref  5 (Page 0): [ 2  0  1 ] -> HIT
+Ref  6 (Page 3): [ 2  0  3 ] -> FAULT
+Ref  7 (Page 0): [ 2  0  3 ] -> HIT
+Ref  8 (Page 4): [ 4  0  3 ] -> FAULT
+Ref  9 (Page 2): [ 4  0  2 ] -> FAULT
+Ref 10 (Page 3): [ 4  3  2 ] -> FAULT
+Ref 11 (Page 0): [ 0  3  2 ] -> FAULT
+Ref 12 (Page 3): [ 0  3  2 ] -> HIT
+Ref 13 (Page 2): [ 0  3  2 ] -> HIT
+Ref 14 (Page 1): [ 1  3  2 ] -> FAULT
+Ref 15 (Page 2): [ 1  3  2 ] -> HIT
+Ref 16 (Page 0): [ 1  0  2 ] -> FAULT
+Ref 17 (Page 1): [ 1  0  2 ] -> HIT
+Ref 18 (Page 7): [ 1  0  7 ] -> FAULT
+Ref 19 (Page 0): [ 1  0  7 ] -> HIT
+Ref 20 (Page 1): [ 1  0  7 ] -> HIT
+LRU Result: 12 Faults, 8 Hits (Hit Ratio: 40%)
+
+--- Optimal Simulation (3 Frames) ---
+Ref  1 (Page 7): [ 7  -  - ] -> FAULT
+Ref  2 (Page 0): [ 7  0  - ] -> FAULT
+Ref  3 (Page 1): [ 7  0  1 ] -> FAULT
+Ref  4 (Page 2): [ 2  0  1 ] -> FAULT
+Ref  5 (Page 0): [ 2  0  1 ] -> HIT
+Ref  6 (Page 3): [ 2  0  3 ] -> FAULT
+Ref  7 (Page 0): [ 2  0  3 ] -> HIT
+Ref  8 (Page 4): [ 2  4  3 ] -> FAULT
+Ref  9 (Page 2): [ 2  4  3 ] -> HIT
+Ref 10 (Page 3): [ 2  4  3 ] -> HIT
+Ref 11 (Page 0): [ 2  0  3 ] -> FAULT
+Ref 12 (Page 3): [ 2  0  3 ] -> HIT
+Ref 13 (Page 2): [ 2  0  3 ] -> HIT
+Ref 14 (Page 1): [ 2  0  1 ] -> FAULT
+Ref 15 (Page 2): [ 2  0  1 ] -> HIT
+Ref 16 (Page 0): [ 2  0  1 ] -> HIT
+Ref 17 (Page 1): [ 2  0  1 ] -> HIT
+Ref 18 (Page 7): [ 7  0  1 ] -> FAULT
+Ref 19 (Page 0): [ 7  0  1 ] -> HIT
+Ref 20 (Page 1): [ 7  0  1 ] -> HIT
+Optimal Result: 9 Faults, 11 Hits (Hit Ratio: 55%)
+
+============================================================
+Part 2: Comparison Across 3, 4, and 5 Frames
+============================================================
+
++--------+-----------+------------+--------+------+-----------+------------+
+| Frames | Algorithm | References | Faults | Hits | Hit Ratio | Fault Rate |
++--------+-----------+------------+--------+------+-----------+------------+
+|   3    | FIFO      |     20     |   15   |   5  |   25%    |    75%    |
+|   3    | LRU       |     20     |   12   |   8  |   40%    |    60%    |
+|   3    | Optimal   |     20     |    9   |  11  |   55%    |    45%    |
++--------+-----------+------------+--------+------+-----------+------------+
+|   4    | FIFO      |     20     |   10   |  10  |   50%    |    50%    |
+|   4    | LRU       |     20     |    8   |  12  |   60%    |    40%    |
+|   4    | Optimal   |     20     |    8   |  12  |   60%    |    40%    |
++--------+-----------+------------+--------+------+-----------+------------+
+|   5    | FIFO      |     20     |    9   |  11  |   55%    |    45%    |
+|   5    | LRU       |     20     |    7   |  13  |   65%    |    35%    |
+|   5    | Optimal   |     20     |    7   |  13  |   65%    |    35%    |
++--------+-----------+------------+--------+------+-----------+------------+
+
+Performance Analysis:
+1. Optimal page replacement consistently yields the lowest page faults (9, 8, 7 faults)
+   because it possesses omniscient future lookahead (Belady optimal criterion).
+2. LRU closely tracks Optimal (12, 8, 7 faults) by leveraging temporal locality of access,
+   significantly outperforming FIFO on smaller frame capacities.
+3. FIFO performs worst (15, 10, 9 faults) because it evicts pages strictly based on arrival
+   order, often ejecting frequently referenced working-set pages.
+
+pagereplace completed successfully.

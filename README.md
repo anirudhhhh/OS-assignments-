@@ -1,28 +1,17 @@
-# OS Lab Assignment 9: Page Table Dump, Demand Paging, and Page Replacement Algorithms
+# Operating Systems Lab Assignments
 
-This assignment implements process page table dumping (`vmprint`), lazy page allocation with handled page faults accounting (`faulttest`), and FIFO/LRU page replacement algorithms comparison (`pagerepl`) in xv6.
+**Student Name**: Anirudh  
+**Roll Number**: `2401MC48`  
+**Course**: CS312 Operating Systems Lab  
+**Repository**: `OS-assignments-`
 
-## How to Build and Run
+---
 
-1. Build and start xv6 in QEMU:
-   ```bash
-   make clean
-   make qemu
-   ```
+## Current Active Assignment
 
-2. Run the test programs inside the xv6 shell:
-   - **Question 1 (Printing the Page Table of a Process)**:
-     ```
-     $ pttest
-     ```
-   - **Question 2 (Handling Page Faults & Lazy Allocation)**:
-     ```
-     $ faulttest
-     ```
-   - **Question 3 (Page Replacement Algorithms: FIFO and LRU)**:
-     ```
-     $ pagerepl
-     ```
-
-3. To exit QEMU:
-   Press `Ctrl-A` then `X`.
+### [Assignment 10: Memory Management, Virtual Memory, Paging & Page Replacement](./2401MC48_Anirudh_Assignment10)
+- **Question 1**: Physical Memory Allocation Tracking (`kalloc.c`, `sys_memstats()`, `memtest.c`).
+- **Question 2**: Virtual-to-Physical Address Translation (`sys_vtop()`, `vttest.c`).
+- **Question 3**: Paging & Page Table Protection (`sys_pageinfo()`, `sys_setreadonly()`, `pagetest.c`).
+- **Question 4**: Page Replacement Algorithms (`pagereplace.c` for FIFO, LRU, Optimal across 3, 4, 5 frames).
+- **Report**: Complete 2-page report at `2401MC48_Anirudh_Assignment10/report.pdf`.

@@ -105,8 +105,10 @@ extern uint64 sys_close(void);
 extern uint64 sys_sync(void);
 extern uint64 sys_va2pa(void);
 extern uint64 sys_getmeminfo(void);
-extern uint64 sys_vmprint(void);
-extern uint64 sys_getfaults(void);
+extern uint64 sys_memstats(void);
+extern uint64 sys_vtop(void);
+extern uint64 sys_pageinfo(void);
+extern uint64 sys_setreadonly(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -134,10 +136,12 @@ static uint64 (*syscalls[])(void) = {
   [SYS_mkdir]   sys_mkdir,
   [SYS_close]   sys_close,
   [SYS_sync]    sys_sync,
-  [SYS_va2pa]      sys_va2pa,
-  [SYS_getmeminfo] sys_getmeminfo,
-  [SYS_vmprint]    sys_vmprint,
-  [SYS_getfaults]  sys_getfaults,
+  [SYS_va2pa]       sys_va2pa,
+  [SYS_getmeminfo]  sys_getmeminfo,
+  [SYS_memstats]    sys_memstats,
+  [SYS_vtop]        sys_vtop,
+  [SYS_pageinfo]    sys_pageinfo,
+  [SYS_setreadonly] sys_setreadonly,
   // clang-format on
 };
 
